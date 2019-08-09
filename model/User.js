@@ -17,7 +17,14 @@ module.exports = (sequelize, Sequelize) => {
     });
 
     User.associate = (models) => {
-
+        User.hasMany(models.Post, {
+            foreignKey: "user_id",
+            sourceKey: "id"
+        });
+        User.hasMany(models.Comment, {
+            foreignKey: "user_id",
+            sourceKey: "id"
+        })
     };
 
     return User;

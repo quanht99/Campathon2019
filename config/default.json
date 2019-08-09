@@ -6,5 +6,8 @@
     "port": "",
     "user": "",
     "password": ""
-  }
+  },"ACCESS_SECRET_KEY": "",
+  "secretAccessKey": "",
+  "accessKeyId": "",
+  "bucket": ""
 }

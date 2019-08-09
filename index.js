@@ -17,14 +17,16 @@ app.use("/ping", (req, res) => {
     res.send("pong")
 });
 
+app.use("/v1", require("./router"));
+
 db.sequelize.sync({
     force: false
 })
     .then(() => {
+        console.log("Connect with database oki");
         app.listen(port, (err) => {
             if (!err) console.log("Server running on ", port);
         });
-
     })
     .catch(err => {
         console.log(err.message)

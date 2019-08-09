@@ -1,5 +1,5 @@
 module.exports.success = (data) => {
-    if(data) throw new Error("Missing data.");
+    if(!data) throw new Error("Missing data.");
     return {
         success: true,
         data: data
