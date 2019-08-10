@@ -77,7 +77,81 @@ async function createComment(req, res){
     }
 }
 
+async function voteComment(req, res){
+    let {comment_id} = req.params;
+    let {vote_type} = req.body;
+    try{
+        if(vote_type === "un_vote"){
+            await CommentQuery.unVote({
+                user_id: req.tokenData.id,
+                comment_id: comment_id
+            })
+        }else{
+            await CommentQuery.unVote({
+                user_id: req.tokenData.id,
+                comment_id: comment_id
+            });
+            await CommentQuery.Vote({
+                user_id: req.tokenData.id,
+                comment_id: comment_id,
+                type: vote_type
+            })
+        }
+        let vote_infor = await CommentQuery.getVoteInforOfComment(comment_id);
+        vote_infor = vote_infor[0];
+        delete vote_infor.id;
+        let data = {
+            vote_infor
+        };
+        return res.json(response.success(data))
+    }
+    catch(err){
+        console.log("voteComment: ", err.message);
+        return res.json(response.fail(err.message))
+    }
+}
+
+async function checkVoteComment(req, res){
+    let {comment_id} = req.query;
+    try{
+        if(!Array.isArray(comment_id)){
+            comment_id = [comment_id]
+        }
+        let votes = await CommentQuery.checkVoteComment({
+            user_id: req.tokenData.id,
+            comment_id: comment_id
+        });
+        votes = votes.map(e => e.dataValues);
+        let vote_status = comment_id.map(e => {
+            let index = votes.findIndex(i => {
+                return parseInt(i.comment_id) === parseInt(e)
+            });
+            if(index >= 0){
+                return {
+                    vote_type: votes[index].type,
+                    comment_id: e
+                }
+            }else{
+                return {
+                    vote_type: "un_vote",
+                    comment_id: e
+                }
+            }
+        });
+        let data = {
+            vote_status
+        };
+        return res.json(response.success(data))
+    }
+    catch(err){
+        console.log("checkVoteComment: ", err.message);
+        return res.json(response.fail(err.message))
+    }
+}
+
 module.exports = {
     getComments,
-    createComment
+    createComment,
+    voteComment,
+    checkVoteComment
 };

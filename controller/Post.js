@@ -103,8 +103,82 @@ async function getPost(req, res){
     }
 }
 
+async function votePost(req, res){
+    let {post_id} = req.params;
+    let {vote_type} = req.body;
+    try{
+        if(vote_type === "un_vote"){
+            await PostQuery.unVote({
+                user_id: req.tokenData.id,
+                post_id: post_id
+            })
+        }else{
+            await PostQuery.unVote({
+                user_id: req.tokenData.id,
+                post_id: post_id
+            });
+            await PostQuery.Vote({
+                user_id: req.tokenData.id,
+                post_id: post_id,
+                type: vote_type
+            })
+        }
+        let vote_infor = await PostQuery.getVoteInforOfPost(post_id);
+        vote_infor = vote_infor[0];
+        delete vote_infor.id;
+        let data = {
+            vote_infor
+        };
+        return res.json(response.success(data))
+    }
+    catch(err){
+        console.log("votePost: ", err.message);
+        return res.json(response.fail(err.message))
+    }
+}
+
+async function checkVotePost(req, res){
+    try{
+        let {post_id} = req.params;
+        let vote = await PostQuery.checkVotePost({
+            user_id: req.tokenData.id,
+            post_id: post_id
+        });
+        let vote_type;
+        if(!vote){
+            vote_type = "un_vote"
+        }else{
+            vote_type = vote.dataValues.type;
+        }
+        let data = {
+            vote_type
+        };
+        return res.json(response.success(data))
+    }
+    catch(err){
+        console.log("checkVotePost: ", err.message);
+        return res.json(response.fail(err.message))
+    }
+}
+
+async function confirmPost(req, res){
+    try{
+        let {post_id} = req.params;
+        let {is_confirm} = req.body;
+        await PostQuery.updatePost({is_confirm}, {id: post_id});
+        return res.json(response.success({}))
+    }
+    catch(err){
+        console.log("confirmPost: ", err.message);
+        return res.json(response.fail(err.message))
+    }
+}
+
 module.exports = {
     createPost,
     getListPost,
-    getPost
+    getPost,
+    votePost,
+    checkVotePost,
+    confirmPost
 };

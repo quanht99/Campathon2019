@@ -72,3 +72,45 @@ module.exports.getPost = async (post_id) => {
         type: db.sequelize.QueryTypes.SELECT
     });
 };
+
+module.exports.unVote = async (constrains) => {
+    return db.VotePost.destroy({
+        where: constrains
+    })
+};
+
+module.exports.Vote = async (payload) => {
+    return db.VotePost.create(payload)
+};
+
+module.exports.getVoteInforOfPost = async (post_id) => {
+    let sql = "SELECT \n" +
+        "    Post.id,\n" +
+        "    SUM(IF(VP.type = 'up_vote', 1, 0)) AS up_vote,\n" +
+        "    SUM(IF(VP.type = 'down_vote', 1, 0)) AS down_vote\n" +
+        "FROM\n" +
+        "    Post\n" +
+        "        LEFT JOIN\n" +
+        "    VotePost AS VP ON VP.post_id = Post.id\n" +
+        "WHERE\n" +
+        "    Post.id = :post_id\n " +
+        "GROUP BY Post.id";
+    return await db.sequelize.query(sql, {
+        replacements: {
+            post_id: post_id
+        },
+        type: db.sequelize.QueryTypes.SELECT
+    });
+};
+
+module.exports.checkVotePost = async (constrains) => {
+    return await db.VotePost.findOne({
+        where: constrains
+    })
+};
+
+module.exports.updatePost = async (payload, constrains) => {
+    return await db.Post.update(payload, {
+        where: constrains
+    })
+};

@@ -1,4 +1,5 @@
 let UserQuery = require("../helps/query/user");
+let RoleQuery = require("../helps/query/role");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const response = require("../helps/response");
@@ -24,7 +25,8 @@ async function register(req, res) {
             user_name: user_name,
             email: email,
             full_name: full_name,
-            password: hashPassword
+            password: hashPassword,
+            role_id: 3
         };
         const newUsers = await UserQuery.createUser(payload);
         let data = {};
@@ -53,8 +55,15 @@ async function login(req, res){
                     expiresIn: sixHours
                 }
             );
+            let role = await RoleQuery.getPermissionFromRoleId(user.dataValues.role_id);
             let data = {
-                token
+                token,
+                user: {
+                    user_name: user.dataValues.user_name,
+                    full_name: user.dataValues.full_name,
+                    email: user.dataValues.email,
+                    role
+                }
             };
             res.json(response.success(data))
         }else{

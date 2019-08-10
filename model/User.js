@@ -24,6 +24,10 @@ module.exports = (sequelize, Sequelize) => {
         User.hasMany(models.Comment, {
             foreignKey: "user_id",
             sourceKey: "id"
+        });
+        User.belongsTo(models.Role, {
+            foreignKey: "role_id",
+            targetKey: "id"
         })
     };
 
