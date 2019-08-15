@@ -14,6 +14,9 @@ const verifyPermission = require("./middleware/verifyPermission");
 //User
 router.post("/users/register", UserController.register);
 router.post("/users/login", UserController.login);
+router.get("/users", verifyToken, verifyPermission("list_user"), UserController.statisticUsers);
+router.get("/users/:user_id",  UserController.getUser);
+router.put("/users/:user_id", verifyToken, verifyPermission("change_permission"), UserController.changeRoleUser);
 
 
 //Post

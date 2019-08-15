@@ -29,7 +29,7 @@ async function createPost(req, res) {
                 post_id: post.dataValues.id
             })
         }
-        res.json(response.success({}))
+        res.json(response.success({post_id: post.dataValues.id}))
     }
     catch(err){
         console.log("createPost: ", err.message);
@@ -86,6 +86,9 @@ async function getPost(req, res){
     try{
         let post = await PostQuery.getPost(post_id);
         post = post[0];
+        let newViews = parseInt(post.views + Math.random() * 5 + 1);
+        await PostQuery.updatePost({views: newViews}, {id: post_id});
+        post.views = newViews;
         let arrImage = post.attachments.split(",");
         post.attachments = [];
         for(let i=0; i<arrImage.length; i++){

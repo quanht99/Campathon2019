@@ -12,3 +12,7 @@ module.exports.updateNotification = async (payload, constrains) => {
         where: constrains
     })
 };
+
+module.exports.createNotification = async (payload) => {
+    return await db.Notification.create(payload);
+};

@@ -1,5 +1,6 @@
-let UserQuery = require("../helps/query/user");
-let RoleQuery = require("../helps/query/role");
+const UserQuery = require("../helps/query/user");
+const RoleQuery = require("../helps/query/role");
+const NotiQuery = require("../helps/query/notification");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const response = require("../helps/response");
@@ -26,7 +27,8 @@ async function register(req, res) {
             email: email,
             full_name: full_name,
             password: hashPassword,
-            role_id: 3
+            role_id: 3,
+            create_time: Date.now()
         };
         const newUsers = await UserQuery.createUser(payload);
         let data = {};
@@ -59,6 +61,7 @@ async function login(req, res){
             let data = {
                 token,
                 user: {
+                    id: user.dataValues.id,
                     user_name: user.dataValues.user_name,
                     full_name: user.dataValues.full_name,
                     email: user.dataValues.email,
@@ -76,8 +79,71 @@ async function login(req, res){
     }
 }
 
+async function statisticUsers(req, res){
+    let {sort_attribute, ascending, page_size, page_number} = req.query;
+    try{
+        if(parseInt(ascending) === 1){
+            ascending = "ASC"
+        }else{
+            ascending = "DESC"
+        }
+        if(!sort_attribute){
+            sort_attribute = "full_name"
+        }
+        let constrains = {
+            ascending,
+            sort_attribute,
+            page_number,
+            page_size
+        };
+        let users = await UserQuery.statisticUsers(constrains);
+        return res.json(response.success(users))
+    }
+    catch(err){
+        console.log("userStatistics: ", err.message);
+        return res.json(response.fail(err.message))
+    }
+}
+
+async function changeRoleUser(req, res){
+    let {user_id} = req.params;
+    let {role_id, reason} = req.body;
+    try{
+        await UserQuery.updateUser({role_id: role_id}, {id: user_id});
+        await NotiQuery.createNotification({
+            title: "Quyền truy cập của bạn đã bị thay đổi.",
+            message: reason,
+            user_id: user_id,
+            is_read: "false",
+            create_time: Date.now()
+        });
+        return res.json(response.success({}))
+    }
+    catch(err){
+        console.log("changeRoleUser: ", err.message);
+        return res.json(response.fail(err.message))
+    }
+}
+
+async function getUser(req, res){
+    let {user_id} = req.params;
+    try{
+        let user = await UserQuery.statisticUser({user_id: user_id});
+        let data = {
+            user
+        };
+        return res.json(response.success(data));
+    }
+    catch(err){
+        console.log("getUser: ", err.message);
+        return res.json(response.fail(err.message))
+    }
+}
 
 module.exports = {
     register,
-    login
+    login,
+    statisticUsers,
+    changeRoleUser,
+    getUser
 };

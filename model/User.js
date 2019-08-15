@@ -13,6 +13,9 @@ module.exports = (sequelize, Sequelize) => {
         },
         password: {
             type: Sequelize.TEXT
+        },
+        create_time: {
+            type: Sequelize.STRING
         }
     });
 
