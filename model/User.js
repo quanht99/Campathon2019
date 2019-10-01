@@ -13,11 +13,25 @@ module.exports = (sequelize, Sequelize) => {
         },
         password: {
             type: Sequelize.TEXT
+        },
+        create_time: {
+            type: Sequelize.STRING
         }
     });
 
     User.associate = (models) => {
-
+        User.hasMany(models.Post, {
+            foreignKey: "user_id",
+            sourceKey: "id"
+        });
+        User.hasMany(models.Comment, {
+            foreignKey: "user_id",
+            sourceKey: "id"
+        });
+        User.belongsTo(models.Role, {
+            foreignKey: "role_id",
+            targetKey: "id"
+        })
     };
 
     return User;
