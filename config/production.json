@@ -2,10 +2,10 @@
   "port": "3100",
   "database": {
     "name": "campathon",
-    "host": "mydb.crbcclnwhqvy.ap-southeast-1.rds.amazonaws.com",
+    "host": "localhost",
     "port": "3306",
-    "user": "quanht",
-    "password": "23061999"
+    "user": "root",
+    "password": "23041999"
   },
   "ACCESS_SECRET_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
   "secretAccessKey": "tQ1jDai1s5YbGoUuRaP3LbXAC62tAPxaJKvCGvVM",
