@@ -10,7 +10,7 @@ deploy:
   - provider: script
     skip_cleanup: true
     script:
-      - ssh -i quanht.pem -o StrictHostKeyChecking=no quanht@34.87.80.48 'bash -s' < deploy.sh $nodeHome
+      - ssh -i quanht.pem -o StrictHostKeyChecking=no quanht@34.87.80.48 'bash -s' < deploy.sh $nodeHome Campathon2019
     on:
       branch: master
 branches:
