@@ -10,8 +10,7 @@ deploy:
   - provider: script
     skip_cleanup: true
     script:
-      - rsync -delete -e "ssh -i quanht.pem -o StrictHostKeyChecking=no" ./ quanht@34.87.80.48:/home/quanht/Campathon2019
-      - ssh -i quanht.pem -o StrictHostKeyChecking=no quanht@34.87.80.48 'bash -s' < deploy.sh $nodeHome Campathon2019
+      - bash ./deploy/deploy.sh dev Campathon2019
     on:
       branch: master
 branches:

@@ -1,5 +1,4 @@
 #!/bin/bash
-
 cd ~/$2
 export PATH=$PATH:$1
 $1/npm install
