@@ -10,7 +10,7 @@ deploy:
   - provider: script
     skip_cleanup: true
     script:
-      - bash ./deploy/deploy.sh dev Campathon2019
+      - bash ./deploy/deploy.sh production Campathon2019
     on:
       branch: master
 branches:
