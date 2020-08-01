@@ -61,5 +61,6 @@ typings/
 .next
 .idea/
 /config/local.json
+/config/production.json
 test.js
 
