@@ -8,7 +8,7 @@
     "password": "anhquancd99"
   },
   "ACCESS_SECRET_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-  "secretAccessKey": "tQ1jDai1s5YbGoUuRaP3LbXAC62tAPxaJKvCGvVM",
-  "accessKeyId": "AKIAIU5OSCFS7BWARS2A",
-  "bucket": "campathon"
+  "secretAccessKey": "",
+  "accessKeyId": "",
+  "bucket": ""
 }

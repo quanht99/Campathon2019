@@ -2,5 +2,6 @@
 
 cd ~/$2
 git pull
-npm install
-# $1/pm2 restart campathon_backend
+export PATH=$PATH:$1
+$1/npm install
+$1/pm2 restart campathon_backend

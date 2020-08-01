@@ -3,7 +3,7 @@ module.exports = {
     script: 'index.js',
     name: 'campathon-backend',
     env: {
-      NODE_ENV="production"
+      NODE_ENV: "production"
     }
   }]
 };
