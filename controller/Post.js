@@ -21,6 +21,7 @@ async function createPost(req, res) {
             id_deleted: "false",
             views: 0
         });
+        console.log(post);
         for(let e of req.files){
             let type = e.originalname.split(".")[1];
             let url = await uploadImageToS3(e.buffer, type);

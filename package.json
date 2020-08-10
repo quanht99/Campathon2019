@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "pm2 restart ecosystem.config.js"
+    "start": "pm2 restart ecosystem.config.js",
+    "local": "NODE_ENV=local nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,6 @@
   "devDependencies": {
     "cors": "^2.8.5",
     "morgan": "^1.9.1",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.4"
   }
 }
